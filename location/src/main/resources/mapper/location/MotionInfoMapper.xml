@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.guardianelf.location.mapper.MotionInfoMapper">
+    
+    <resultMap type="MotionInfo" id="MotionInfoResult">
+        <result property="id"    column="id"    />
+        <result property="speedKnots"    column="speed_knots"    />
+        <result property="speedKmh"    column="speed_kmh"    />
+        <result property="courseTrue"    column="course_true"    />
+        <result property="magneticVariation"    column="magnetic_variation"    />
+        <result property="createdAt"    column="created_at"    />
+    </resultMap>
+
+    <sql id="selectMotionInfoVo">
+        select id, speed_knots, speed_kmh, course_true, magnetic_variation, created_at from motion_info
+    </sql>
+
+    <select id="selectMotionInfoList" parameterType="MotionInfo" resultMap="MotionInfoResult">
+        <include refid="selectMotionInfoVo"/>
+        <where>  
+            <if test="speedKnots != null "> and speed_knots = #{speedKnots}</if>
+            <if test="speedKmh != null "> and speed_kmh = #{speedKmh}</if>
+            <if test="courseTrue != null "> and course_true = #{courseTrue}</if>
+            <if test="magneticVariation != null "> and magnetic_variation = #{magneticVariation}</if>
+        </where>
+    </select>
+    
+    <select id="selectMotionInfoById" parameterType="Long" resultMap="MotionInfoResult">
+        <include refid="selectMotionInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMotionInfo" parameterType="MotionInfo">
+        insert into motion_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="speedKnots != null">speed_knots,</if>
+            <if test="speedKmh != null">speed_kmh,</if>
+            <if test="courseTrue != null">course_true,</if>
+            <if test="magneticVariation != null">magnetic_variation,</if>
+            <if test="createdAt != null">created_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="speedKnots != null">#{speedKnots},</if>
+            <if test="speedKmh != null">#{speedKmh},</if>
+            <if test="courseTrue != null">#{courseTrue},</if>
+            <if test="magneticVariation != null">#{magneticVariation},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMotionInfo" parameterType="MotionInfo">
+        update motion_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="speedKnots != null">speed_knots = #{speedKnots},</if>
+            <if test="speedKmh != null">speed_kmh = #{speedKmh},</if>
+            <if test="courseTrue != null">course_true = #{courseTrue},</if>
+            <if test="magneticVariation != null">magnetic_variation = #{magneticVariation},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMotionInfoById" parameterType="Long">
+        delete from motion_info where id = #{id}
+    </delete>
+
+    <delete id="deleteMotionInfoByIds" parameterType="String">
+        delete from motion_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

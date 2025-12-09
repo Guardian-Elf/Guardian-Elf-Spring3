@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.guardianelf.location.mapper.CoordinateInfoMapper">
+    
+    <resultMap type="CoordinateInfo" id="CoordinateInfoResult">
+        <result property="id"    column="id"    />
+        <result property="altitudeM"    column="altitude_m"    />
+        <result property="altitudeAgl"    column="altitude_agl"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="createdAt"    column="created_at"    />
+    </resultMap>
+
+    <sql id="selectCoordinateInfoVo">
+        select id, altitude_m, altitude_agl, longitude, latitude, created_at from coordinate_info
+    </sql>
+
+    <select id="selectCoordinateInfoList" parameterType="CoordinateInfo" resultMap="CoordinateInfoResult">
+        <include refid="selectCoordinateInfoVo"/>
+        <where>  
+            <if test="altitudeM != null "> and altitude_m = #{altitudeM}</if>
+            <if test="altitudeAgl != null "> and altitude_agl = #{altitudeAgl}</if>
+            <if test="longitude != null "> and longitude = #{longitude}</if>
+            <if test="latitude != null "> and latitude = #{latitude}</if>
+        </where>
+    </select>
+    
+    <select id="selectCoordinateInfoById" parameterType="Long" resultMap="CoordinateInfoResult">
+        <include refid="selectCoordinateInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCoordinateInfo" parameterType="CoordinateInfo">
+        insert into coordinate_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="altitudeM != null">altitude_m,</if>
+            <if test="altitudeAgl != null">altitude_agl,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="createdAt != null">created_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="altitudeM != null">#{altitudeM},</if>
+            <if test="altitudeAgl != null">#{altitudeAgl},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCoordinateInfo" parameterType="CoordinateInfo">
+        update coordinate_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="altitudeM != null">altitude_m = #{altitudeM},</if>
+            <if test="altitudeAgl != null">altitude_agl = #{altitudeAgl},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCoordinateInfoById" parameterType="Long">
+        delete from coordinate_info where id = #{id}
+    </delete>
+
+    <delete id="deleteCoordinateInfoByIds" parameterType="String">
+        delete from coordinate_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

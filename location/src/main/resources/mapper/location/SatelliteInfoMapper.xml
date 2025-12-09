@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.guardianelf.location.mapper.SatelliteInfoMapper">
+    
+    <resultMap type="SatelliteInfo" id="SatelliteInfoResult">
+        <result property="id"    column="id"    />
+        <result property="gpsSatellites"    column="gps_satellites"    />
+        <result property="bdsSatellites"    column="bds_satellites"    />
+        <result property="createdAt"    column="created_at"    />
+    </resultMap>
+
+    <sql id="selectSatelliteInfoVo">
+        select id, gps_satellites, bds_satellites, created_at from satellite_info
+    </sql>
+
+    <select id="selectSatelliteInfoList" parameterType="SatelliteInfo" resultMap="SatelliteInfoResult">
+        <include refid="selectSatelliteInfoVo"/>
+        <where>  
+            <if test="gpsSatellites != null "> and gps_satellites = #{gpsSatellites}</if>
+            <if test="bdsSatellites != null "> and bds_satellites = #{bdsSatellites}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+        </where>
+    </select>
+    
+    <select id="selectSatelliteInfoById" parameterType="Long" resultMap="SatelliteInfoResult">
+        <include refid="selectSatelliteInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSatelliteInfo" parameterType="SatelliteInfo">
+        insert into satellite_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="gpsSatellites != null">gps_satellites,</if>
+            <if test="bdsSatellites != null">bds_satellites,</if>
+            <if test="createdAt != null">created_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="gpsSatellites != null">#{gpsSatellites},</if>
+            <if test="bdsSatellites != null">#{bdsSatellites},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSatelliteInfo" parameterType="SatelliteInfo">
+        update satellite_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="gpsSatellites != null">gps_satellites = #{gpsSatellites},</if>
+            <if test="bdsSatellites != null">bds_satellites = #{bdsSatellites},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSatelliteInfoById" parameterType="Long">
+        delete from satellite_info where id = #{id}
+    </delete>
+
+    <delete id="deleteSatelliteInfoByIds" parameterType="String">
+        delete from satellite_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

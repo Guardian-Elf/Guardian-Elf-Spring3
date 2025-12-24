@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.guardianelf.location.mapper.EnvironmentDataMapper">
+    
+    <resultMap type="EnvironmentData" id="EnvironmentDataResult">
+        <result property="id"    column="id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="illuminance"    column="illuminance"    />
+        <result property="temperature"    column="temperature"    />
+        <result property="humidity"    column="humidity"    />
+        <result property="pressure"    column="pressure"    />
+        <result property="localTime"    column="local_time"    />
+        <result property="createdAt"    column="created_at"    />
+    </resultMap>
+
+    <sql id="selectEnvironmentDataVo">
+        select id, device_id, illuminance, temperature, humidity, pressure, local_time, created_at from environment_data
+    </sql>
+
+    <select id="selectEnvironmentDataList" parameterType="EnvironmentData" resultMap="EnvironmentDataResult">
+        <include refid="selectEnvironmentDataVo"/>
+        <where>  
+            <if test="deviceId != null "> and device_id = #{deviceId}</if>
+            <if test="illuminance != null "> and illuminance = #{illuminance}</if>
+            <if test="temperature != null "> and temperature = #{temperature}</if>
+            <if test="humidity != null "> and humidity = #{humidity}</if>
+            <if test="pressure != null "> and pressure = #{pressure}</if>
+            <if test="localTime != null "> and local_time = #{localTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectEnvironmentDataById" parameterType="Long" resultMap="EnvironmentDataResult">
+        <include refid="selectEnvironmentDataVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEnvironmentData" parameterType="EnvironmentData" useGeneratedKeys="true" keyProperty="id">
+        insert into environment_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">device_id,</if>
+            <if test="illuminance != null">illuminance,</if>
+            <if test="temperature != null">temperature,</if>
+            <if test="humidity != null">humidity,</if>
+            <if test="pressure != null">pressure,</if>
+            <if test="localTime != null">local_time,</if>
+            <if test="createdAt != null">created_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="illuminance != null">#{illuminance},</if>
+            <if test="temperature != null">#{temperature},</if>
+            <if test="humidity != null">#{humidity},</if>
+            <if test="pressure != null">#{pressure},</if>
+            <if test="localTime != null">#{localTime},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEnvironmentData" parameterType="EnvironmentData">
+        update environment_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="illuminance != null">illuminance = #{illuminance},</if>
+            <if test="temperature != null">temperature = #{temperature},</if>
+            <if test="humidity != null">humidity = #{humidity},</if>
+            <if test="pressure != null">pressure = #{pressure},</if>
+            <if test="localTime != null">local_time = #{localTime},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEnvironmentDataById" parameterType="Long">
+        delete from environment_data where id = #{id}
+    </delete>
+
+    <delete id="deleteEnvironmentDataByIds" parameterType="String">
+        delete from environment_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

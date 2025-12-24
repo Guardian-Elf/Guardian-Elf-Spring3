@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.guardianelf.location.mapper.SpeedDataMapper">
+    
+    <resultMap type="SpeedData" id="SpeedDataResult">
+        <result property="id"    column="id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="accelX"    column="accel_x"    />
+        <result property="accelY"    column="accel_y"    />
+        <result property="accelZ"    column="accel_z"    />
+        <result property="gyroX"    column="gyro_x"    />
+        <result property="gyroY"    column="gyro_y"    />
+        <result property="gyroZ"    column="gyro_z"    />
+        <result property="localTime"    column="local_time"    />
+        <result property="createdAt"    column="created_at"    />
+    </resultMap>
+
+    <sql id="selectSpeedDataVo">
+        select id, device_id, accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z, local_time, created_at from speed_data
+    </sql>
+
+    <select id="selectSpeedDataList" parameterType="SpeedData" resultMap="SpeedDataResult">
+        <include refid="selectSpeedDataVo"/>
+        <where>  
+            <if test="deviceId != null "> and device_id = #{deviceId}</if>
+            <if test="accelX != null "> and accel_x = #{accelX}</if>
+            <if test="accelY != null "> and accel_y = #{accelY}</if>
+            <if test="accelZ != null "> and accel_z = #{accelZ}</if>
+            <if test="gyroX != null "> and gyro_x = #{gyroX}</if>
+            <if test="gyroY != null "> and gyro_y = #{gyroY}</if>
+            <if test="gyroZ != null "> and gyro_z = #{gyroZ}</if>
+            <if test="localTime != null "> and local_time = #{localTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectSpeedDataById" parameterType="Long" resultMap="SpeedDataResult">
+        <include refid="selectSpeedDataVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSpeedData" parameterType="SpeedData" useGeneratedKeys="true" keyProperty="id">
+        insert into speed_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">device_id,</if>
+            <if test="accelX != null">accel_x,</if>
+            <if test="accelY != null">accel_y,</if>
+            <if test="accelZ != null">accel_z,</if>
+            <if test="gyroX != null">gyro_x,</if>
+            <if test="gyroY != null">gyro_y,</if>
+            <if test="gyroZ != null">gyro_z,</if>
+            <if test="localTime != null">local_time,</if>
+            <if test="createdAt != null">created_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="accelX != null">#{accelX},</if>
+            <if test="accelY != null">#{accelY},</if>
+            <if test="accelZ != null">#{accelZ},</if>
+            <if test="gyroX != null">#{gyroX},</if>
+            <if test="gyroY != null">#{gyroY},</if>
+            <if test="gyroZ != null">#{gyroZ},</if>
+            <if test="localTime != null">#{localTime},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSpeedData" parameterType="SpeedData">
+        update speed_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="accelX != null">accel_x = #{accelX},</if>
+            <if test="accelY != null">accel_y = #{accelY},</if>
+            <if test="accelZ != null">accel_z = #{accelZ},</if>
+            <if test="gyroX != null">gyro_x = #{gyroX},</if>
+            <if test="gyroY != null">gyro_y = #{gyroY},</if>
+            <if test="gyroZ != null">gyro_z = #{gyroZ},</if>
+            <if test="localTime != null">local_time = #{localTime},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSpeedDataById" parameterType="Long">
+        delete from speed_data where id = #{id}
+    </delete>
+
+    <delete id="deleteSpeedDataByIds" parameterType="String">
+        delete from speed_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

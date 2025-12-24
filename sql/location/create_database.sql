@@ -81,3 +81,40 @@ CREATE INDEX idx_device_time ON gps_data (device_id, local_time);
 
 -- 坐标表索引（添加经纬度索引）
 CREATE INDEX idx_coordinate_lon_lat ON coordinate_info (longitude, latitude);
+
+
+-- 环境数据表 (environment_data) - 适配现有结构
+CREATE TABLE environment_data
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY COMMENT 'ID',
+    device_id     INT      NOT NULL COMMENT '设备ID',
+    illuminance   FLOAT DEFAULT NULL COMMENT '光照强度(lux)',
+    temperature   FLOAT DEFAULT NULL COMMENT '温度(°C)',
+    humidity      FLOAT DEFAULT NULL COMMENT '湿度(%)',
+    pressure      FLOAT DEFAULT NULL COMMENT '气压(hPa)',
+    local_time    TIMESTAMP NOT NULL COMMENT '设备时间',
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+
+    FOREIGN KEY (device_id) REFERENCES device_info (id) ON DELETE CASCADE,
+    INDEX idx_env_device_time (device_id, local_time),
+    INDEX idx_env_created_at (created_at)
+) COMMENT = '环境数据表';
+
+-- 运动数据表 (speed_data)
+CREATE TABLE speed_data
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY COMMENT 'ID',
+    device_id     INT      NOT NULL COMMENT '设备ID',
+    accel_x       FLOAT DEFAULT NULL COMMENT '加速度X轴(g)',
+    accel_y       FLOAT DEFAULT NULL COMMENT '加速度Y轴(g)',
+    accel_z       FLOAT DEFAULT NULL COMMENT '加速度Z轴(g)',
+    gyro_x        FLOAT DEFAULT NULL COMMENT '陀螺仪X轴(°/s)',
+    gyro_y        FLOAT DEFAULT NULL COMMENT '陀螺仪Y轴(°/s)',
+    gyro_z        FLOAT DEFAULT NULL COMMENT '陀螺仪Z轴(°/s)',
+    local_time    TIMESTAMP NOT NULL COMMENT '设备时间',
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+
+    FOREIGN KEY (device_id) REFERENCES device_info (id) ON DELETE CASCADE,
+    INDEX idx_motion_device_time (device_id, local_time),
+    INDEX idx_motion_created_at (created_at)
+) COMMENT = '运动数据表';

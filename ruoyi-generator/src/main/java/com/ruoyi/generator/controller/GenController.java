@@ -46,7 +46,7 @@ import com.ruoyi.generator.service.IGenTableService;
  */
 @RestController
 @RequestMapping("/tool/gen")
-@DataSource(value = DataSourceType.LOCATION)
+@DataSource(value = DataSourceType.SHOPPING)
 public class GenController extends BaseController
 {
     @Autowired

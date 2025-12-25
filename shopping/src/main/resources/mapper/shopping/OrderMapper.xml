@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.guardianelf.shopping.mapper.OrderMapper">
+    
+    <resultMap type="Order" id="OrderResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="addressId"    column="address_id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="price"    column="price"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="totalAmount"    column="total_amount"    />
+        <result property="shippingFee"    column="shipping_fee"    />
+        <result property="payAmount"    column="pay_amount"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="paymentMethod"    column="payment_method"    />
+        <result property="paymentTime"    column="payment_time"    />
+        <result property="shippingTime"    column="shipping_time"    />
+        <result property="receiveTime"    column="receive_time"    />
+        <result property="cancelTime"    column="cancel_time"    />
+        <result property="userNote"    column="user_note"    />
+        <result property="invoiceNeeded"    column="invoice_needed"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="updatedAt"    column="updated_at"    />
+    </resultMap>
+
+    <sql id="selectOrderVo">
+        select id, user_id, address_id, product_id, price, quantity, total_amount, shipping_fee, pay_amount, order_status, payment_method, payment_time, shipping_time, receive_time, cancel_time, user_note, invoice_needed, created_at, updated_at from `order`
+    </sql>
+
+    <select id="selectOrderList" parameterType="Order" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        <where>  
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="addressId != null  and addressId != ''"> and address_id = #{addressId}</if>
+            <if test="productId != null  and productId != ''"> and product_id = #{productId}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="quantity != null  and quantity != ''"> and quantity = #{quantity}</if>
+            <if test="totalAmount != null "> and total_amount = #{totalAmount}</if>
+            <if test="shippingFee != null "> and shipping_fee = #{shippingFee}</if>
+            <if test="payAmount != null "> and pay_amount = #{payAmount}</if>
+            <if test="orderStatus != null "> and order_status = #{orderStatus}</if>
+            <if test="paymentMethod != null  and paymentMethod != ''"> and payment_method = #{paymentMethod}</if>
+            <if test="paymentTime != null "> and payment_time = #{paymentTime}</if>
+            <if test="shippingTime != null "> and shipping_time = #{shippingTime}</if>
+            <if test="receiveTime != null "> and receive_time = #{receiveTime}</if>
+            <if test="cancelTime != null "> and cancel_time = #{cancelTime}</if>
+            <if test="userNote != null  and userNote != ''"> and user_note = #{userNote}</if>
+            <if test="invoiceNeeded != null "> and invoice_needed = #{invoiceNeeded}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderById" parameterType="String" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOrder" parameterType="Order">
+        insert into `order`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null and userId != ''">user_id,</if>
+            <if test="addressId != null and addressId != ''">address_id,</if>
+            <if test="productId != null and productId != ''">product_id,</if>
+            <if test="price != null">price,</if>
+            <if test="quantity != null and quantity != ''">quantity,</if>
+            <if test="totalAmount != null">total_amount,</if>
+            <if test="shippingFee != null">shipping_fee,</if>
+            <if test="payAmount != null">pay_amount,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="paymentMethod != null">payment_method,</if>
+            <if test="paymentTime != null">payment_time,</if>
+            <if test="shippingTime != null">shipping_time,</if>
+            <if test="receiveTime != null">receive_time,</if>
+            <if test="cancelTime != null">cancel_time,</if>
+            <if test="userNote != null">user_note,</if>
+            <if test="invoiceNeeded != null">invoice_needed,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedAt != null">updated_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null and userId != ''">#{userId},</if>
+            <if test="addressId != null and addressId != ''">#{addressId},</if>
+            <if test="productId != null and productId != ''">#{productId},</if>
+            <if test="price != null">#{price},</if>
+            <if test="quantity != null and quantity != ''">#{quantity},</if>
+            <if test="totalAmount != null">#{totalAmount},</if>
+            <if test="shippingFee != null">#{shippingFee},</if>
+            <if test="payAmount != null">#{payAmount},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="paymentMethod != null">#{paymentMethod},</if>
+            <if test="paymentTime != null">#{paymentTime},</if>
+            <if test="shippingTime != null">#{shippingTime},</if>
+            <if test="receiveTime != null">#{receiveTime},</if>
+            <if test="cancelTime != null">#{cancelTime},</if>
+            <if test="userNote != null">#{userNote},</if>
+            <if test="invoiceNeeded != null">#{invoiceNeeded},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrder" parameterType="Order">
+        update `order`
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            <if test="addressId != null and addressId != ''">address_id = #{addressId},</if>
+            <if test="productId != null and productId != ''">product_id = #{productId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="quantity != null and quantity != ''">quantity = #{quantity},</if>
+            <if test="totalAmount != null">total_amount = #{totalAmount},</if>
+            <if test="shippingFee != null">shipping_fee = #{shippingFee},</if>
+            <if test="payAmount != null">pay_amount = #{payAmount},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+            <if test="paymentMethod != null">payment_method = #{paymentMethod},</if>
+            <if test="paymentTime != null">payment_time = #{paymentTime},</if>
+            <if test="shippingTime != null">shipping_time = #{shippingTime},</if>
+            <if test="receiveTime != null">receive_time = #{receiveTime},</if>
+            <if test="cancelTime != null">cancel_time = #{cancelTime},</if>
+            <if test="userNote != null">user_note = #{userNote},</if>
+            <if test="invoiceNeeded != null">invoice_needed = #{invoiceNeeded},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderById" parameterType="String">
+        delete from `order` where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderByIds" parameterType="String">
+        delete from `order` where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

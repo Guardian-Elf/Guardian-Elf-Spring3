@@ -34,7 +34,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/${moduleName}/${businessName}")
-@DataSource(value = DataSourceType.LOCATION)
+@DataSource(value = DataSourceType.SHOPPING)
 public class ${ClassName}Controller extends BaseController
 {
     @Autowired

@@ -19,5 +19,9 @@ public enum DataSourceType
     /**
      * 定位库
      */
-    LOCATION
+    LOCATION,
+    /**
+     * 商品库
+     */
+    SHOPPING
 }

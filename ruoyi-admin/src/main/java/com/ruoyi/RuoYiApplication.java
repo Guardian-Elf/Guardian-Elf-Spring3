@@ -14,10 +14,12 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
 @ComponentScan(basePackages = {
         "com.ruoyi",
-        "fun.guardianelf.location"
+        "fun.guardianelf.location",
+        "fun.guardianelf.shopping"
 })
 @MapperScan(basePackages = {
-        "fun.guardianelf.location.mapper"
+        "fun.guardianelf.location.mapper",
+        "fun.guardianelf.shopping.mapper"
 })
 public class RuoYiApplication
 {

@@ -15,11 +15,13 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {
         "com.ruoyi",
         "fun.guardianelf.location",
-        "fun.guardianelf.shopping"
+        "fun.guardianelf.shopping",
+        "fun.guardianelf.embedded"
 })
 @MapperScan(basePackages = {
         "fun.guardianelf.location.mapper",
-        "fun.guardianelf.shopping.mapper"
+        "fun.guardianelf.shopping.mapper",
+        "fun.guardianelf.embedded.mapper"
 })
 public class RuoYiApplication
 {
